@@ -516,19 +516,6 @@ in
     })
 
     {
-      home.file."${relToDotDir ".zshenv"}".text = ''
-        # Environment variables
-        . "${config.home.profileDirectory}/etc/profile.d/hm-session-vars.sh"
-
-        # Only source this once
-        if [[ -z "$__HM_ZSH_SESS_VARS_SOURCED" ]]; then
-          export __HM_ZSH_SESS_VARS_SOURCED=1
-          ${envVarsStr}
-        fi
-      '';
-    }
-
-    {
       home.packages = [ cfg.package ]
         ++ optional cfg.enableCompletion pkgs.nix-zsh-completions
         ++ optional cfg.oh-my-zsh.enable cfg.oh-my-zsh.package;
@@ -573,6 +560,10 @@ in
         ${optionalString cfg.enableAutosuggestions
           "source ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
         }
+
+        # Environment variables
+        . "${config.home.profileDirectory}/etc/profile.d/hm-session-vars.sh"
+        ${envVarsStr}
 
         ${optionalString cfg.oh-my-zsh.enable ''
             # oh-my-zsh extra settings for plugins
