@@ -121,6 +121,7 @@ import nmt {
     ./modules/programs/tmate
     ./modules/programs/tmux
     ./modules/programs/topgrade
+    ./modules/programs/vifm
     ./modules/programs/vscode
     ./modules/programs/watson
     ./modules/programs/wezterm
