@@ -102,6 +102,7 @@ import nmt {
     ./modules/programs/nushell
     ./modules/programs/oh-my-posh
     ./modules/programs/pandoc
+    ./modules/programs/papis
     ./modules/programs/pet
     ./modules/programs/pistol
     ./modules/programs/pls
@@ -122,6 +123,7 @@ import nmt {
     ./modules/programs/tmux
     ./modules/programs/topgrade
     ./modules/programs/vifm
+    ./modules/programs/vim-vint
     ./modules/programs/vscode
     ./modules/programs/watson
     ./modules/programs/wezterm
@@ -163,10 +165,13 @@ import nmt {
     ./modules/programs/terminator
     ./modules/programs/thunderbird
     ./modules/programs/waybar
+    ./modules/programs/wlogout
     ./modules/programs/xmobar
     ./modules/programs/yt-dlp
     ./modules/services/barrier
     ./modules/services/borgmatic
+    ./modules/services/cachix-agent
+    ./modules/services/clipman
     ./modules/services/devilspie2
     ./modules/services/dropbox
     ./modules/services/emacs
@@ -184,7 +189,10 @@ import nmt {
     ./modules/services/mopidy
     ./modules/services/mpd
     ./modules/services/mpdris2
+    ./modules/services/mpd-mpris
     ./modules/services/pantalaimon
+    ./modules/services/parcellite
+    ./modules/services/pass-secret-service
     ./modules/services/pbgopy
     ./modules/services/picom
     ./modules/services/playerctld

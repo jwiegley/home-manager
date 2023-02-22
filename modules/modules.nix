@@ -144,6 +144,7 @@ let
     ./programs/oh-my-posh.nix
     ./programs/opam.nix
     ./programs/pandoc.nix
+    ./programs/papis.nix
     ./programs/password-store.nix
     ./programs/pazi.nix
     ./programs/pet.nix
@@ -184,14 +185,17 @@ let
     ./programs/tmux.nix
     ./programs/topgrade.nix
     ./programs/urxvt.nix
-    ./programs/vim.nix
     ./programs/vifm.nix
+    ./programs/vim.nix
+    ./programs/vim-vint.nix
     ./programs/vscode.nix
     ./programs/vscode/haskell.nix
     ./programs/pywal.nix
+    ./programs/rbenv.nix
     ./programs/watson.nix
     ./programs/waybar.nix
     ./programs/wezterm.nix
+    ./programs/wlogout.nix
     ./programs/xmobar.nix
     ./programs/yt-dlp.nix
     ./programs/z-lua.nix
@@ -201,12 +205,15 @@ let
     ./programs/zplug.nix
     ./programs/zsh.nix
     ./programs/zsh/prezto.nix
+    ./services/autorandr.nix
     ./services/barrier.nix
     ./services/betterlockscreen.nix
     ./services/blueman-applet.nix
     ./services/borgmatic.nix
+    ./services/cachix-agent.nix
     ./services/caffeine.nix
     ./services/cbatticon.nix
+    ./services/clipman.nix
     ./services/clipmenu.nix
     ./services/devilspie2.nix
     ./services/dropbox.nix
@@ -239,10 +246,12 @@ let
     ./services/lorri.nix
     ./services/mako.nix
     ./services/mbsync.nix
+    ./services/megasync.nix
     ./services/mopidy.nix
     ./services/mpd.nix
     ./services/mpdris2.nix
     ./services/mpd-discord-rpc.nix
+    ./services/mpd-mpris.nix
     ./services/mpris-proxy.nix
     ./services/muchsync.nix
     ./services/network-manager-applet.nix

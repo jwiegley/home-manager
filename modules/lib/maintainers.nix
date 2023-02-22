@@ -239,6 +239,12 @@
     githubId = 1553581;
     name = "Josh Robson Chase";
   };
+  jwygoda = {
+    name = "Jarosław Wygoda";
+    email = "jaroslaw@wygoda.me";
+    github = "jwygoda";
+    githubId = 20658981;
+  };
   hawkw = {
     name = "Eliza Weisman";
     email = "eliza@elizas.website";
@@ -350,5 +356,21 @@
     email = "69244516+lukasngl@users.noreply.github.com";
     github = "lukasngl";
     githubId = 69244516;
+  };
+  toastal = {
+    email = "toastal+nix@posteo.net";
+    matrix = "@toastal:matrix.org";
+    github = "toastal";
+    githubId = 561087;
+    name = "toastal";
+    keys =
+      [{ fingerprint = "7944 74B7 D236 DAB9 C9EF  E7F9 5CCE 6F14 66D4 7C9E"; }];
+  };
+  tomodachi94 = {
+    email = "tomodachi94+nixpkgs@protonmail.com";
+    matrix = "@tomodachi94:matrix.org";
+    github = "tomodachi94";
+    githubId = 68489118;
+    name = "tomodachi94";
   };
 }

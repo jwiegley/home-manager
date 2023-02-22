@@ -256,7 +256,7 @@ in
 
     home.sessionVariables = mkOption {
       default = {};
-      type = types.attrs;
+      type = with types; lazyAttrsOf (oneOf [ str path int float ]);
       example = { EDITOR = "emacs"; GS_OPTIONS = "-sPAPERSIZE=a4"; };
       description = ''
         Environment variables to always set at login.
@@ -679,7 +679,6 @@ in
             gnused
             ncurses             # For `tput`.
           ]
-          ++ optional (config.nix.enable && config.nix.package != null) config.nix.package
           ++ config.home.extraActivationPath
         )
         + (
@@ -688,7 +687,7 @@ in
           if config.nix.enable && config.nix.package != null then
             ":${config.nix.package}/bin"
           else
-            ":$(dirname $(readlink -m $(type -p nix-env)))"
+            ":$(${pkgs.coreutils}/bin/dirname $(${pkgs.coreutils}/bin/readlink -m $(type -p nix-env)))"
         )
         + optionalString (!cfg.emptyActivationPath) "\${PATH:+:}$PATH";
 
