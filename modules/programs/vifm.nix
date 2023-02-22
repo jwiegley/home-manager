@@ -15,7 +15,7 @@ in {
       type = types.lines;
       default = "";
       description = ''
-        Extra lines added to the <filename>vifmrc</filename> file.
+        Extra lines added to the <filename>$XDG_CONFIG_HOME/vifm/vifmrc</filename> file.
       '';
     };
   };
