@@ -247,6 +247,28 @@ with lib;
           };
         };
       };
+      q_signature_text = basics // {
+        signature = {
+          showSignature = "append";
+          delimiter = ''
+            ~~~
+          '';
+          text = ''
+            some signature
+            goes here
+          '';
+        };
+      };
+      # for manual testing
+      # r_signature_cmd = basics // {
+      #   signature = {
+      #     showSignature = "append";
+      #     command = pkgs.writeShellScript "test-signature" /*bash*/ ''
+      #       echo My Sinagture
+      #     '';
+      #     text = "should be ignored";
+      #   };
+      # };
     };
   };
 }

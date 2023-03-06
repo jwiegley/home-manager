@@ -84,3 +84,7 @@ from = test <test@email.invalid>
 outgoing = imap+plain://intentionallyWrong:PaSsWorD@smtp.host.invalid:1337
 postpone = dRaFts
 source = smtp+plain://intentionallyWrong:PaSsWorD@smtp.host.invalid:1337
+
+[q_signature_text]
+from = Foo Bar <addr@mail.invalid>
+signature-file = /nix/store/7j5kjvpzqnga11rrkwrpcxcqamlfavgk-aerc-signature.txt

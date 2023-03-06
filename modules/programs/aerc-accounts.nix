@@ -148,8 +148,23 @@ in {
         else
           { };
 
+      signatureCfg = account:
+        if account.signature.showSignature != "none" then
+          if account.signature.command != null then {
+            signature-cmd = pkgs.writeShellScript "aerc-signature.sh" # bash
+              ''
+                printf '%s\n' "${account.signature.delimiter}"
+                ${account.signature.command}
+              '';
+          } else {
+            signature-file = pkgs.writeText "aerc-signature.txt"
+              (account.signature.delimiter + account.signature.text);
+          }
+        else
+          { };
+
     in (basicCfg account) // (sourceCfg account) // (outgoingCfg account)
-    // account.aerc.extraAccounts;
+    // (signatureCfg account) // account.aerc.extraAccounts;
 
   mkAccountConfig = name: account:
     mapAttrNames (addAccountName name) account.aerc.extraConfig;
