@@ -10,6 +10,20 @@ let
 
   isNixAtLeast = versionAtLeast (getVersion nixPackage);
 
+  nixPath = lib.concatStringsSep ":" cfg.nixPath;
+
+  # The deploy path for declarative channels. The directory name is prefixed
+  # with a number to make it easier for files in ~/.nix-defexpr to control the
+  # order they'll be read relative to each other.
+  channelPath = ".nix-defexpr/50-home-manager";
+
+  channelsDrv = let
+    mkEntry = name: drv: {
+      inherit name;
+      path = toString drv;
+    };
+  in pkgs.linkFarm "channels" (lib.mapAttrsToList mkEntry cfg.channels);
+
   nixConf = assert isNixAtLeast "2.2";
     let
 
@@ -120,6 +134,22 @@ in {
       description = lib.mdDoc ''
         Whether {option}`nix.nixPath` should keep the previously set values in
         {env}`NIX_PATH`.
+      '';
+    };
+
+    channels = lib.mkOption {
+      type = with lib.types; attrsOf package;
+      default = { };
+      example = lib.literalExpression "{ inherit nixpkgs; }";
+      description = lib.mdDoc ''
+        A declarative alternative to Nix channels. Whereas with stock channels,
+        you would register URLs and fetch them into the Nix store with
+        {manpage}`nix-channel(1)`, this option allows you to register the store
+        path directly. One particularly useful example is registering flake
+        inputs as channels.
+
+        This option can coexist with stock Nix channels. If the same channel is
+        defined in both, this option takes precedence.
       '';
     };
 
@@ -237,6 +267,11 @@ in {
 
     (mkIf (cfg.nixPath != [ ] && cfg.keepOldNixPath) {
       home.sessionVariables.NIX_PATH = "${nixPath}\${NIX_PATH:+:$NIX_PATH}";
+    })
+
+    (lib.mkIf (cfg.channels != { }) {
+      nix.nixPath = [ "${config.home.homeDirectory}/${channelPath}" ];
+      home.file."${channelPath}".source = channelsDrv;
     })
 
     (mkIf (cfg.registry != { }) {
