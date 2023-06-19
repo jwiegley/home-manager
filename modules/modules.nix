@@ -304,6 +304,7 @@ let
     ./services/safeeyes.nix
     ./services/screen-locker.nix
     ./services/sctd.nix
+    ./services/shikane.nix
     ./services/spotifyd.nix
     ./services/stalonetray.nix
     ./services/status-notifier-watcher.nix

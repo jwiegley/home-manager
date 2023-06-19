@@ -216,6 +216,7 @@ import nmt {
     ./modules/services/recoll
     ./modules/services/redshift-gammastep
     ./modules/services/screen-locker
+    ./modules/services/shikane
     ./modules/services/swayidle
     ./modules/services/sxhkd
     ./modules/services/syncthing/linux
