@@ -92,44 +92,55 @@ let
   blank = text "Blank";
 
   screenOptions = {
-    name = mkOption { type = types.str; };
+    name = mkOption {
+      type = types.str;
+      description = "Name that shows on the screen tab.";
+    };
 
     fields = mkOption {
       type = types.oneOf [ types.str (types.listOf types.str) ];
       default = "PID USER M_VIRT STATE PERCENT_CPU PERCENT_MEM TIME Command";
+      description = "What fields to show in the screen.";
     };
 
     all_branches_collapsed = mkOption {
       type = types.bool;
       default = false;
+      description = "Whether to collapse all branches in the tree view.";
     };
 
     sort_direction = mkOption {
       type = types.enum [ (-1) 1 ];
       default = -1;
+      description = "Whether to sort ascending or descending.";
     };
     sort_key = mkOption {
       type = types.str;
       example = "PERCENT_MEM";
+      description = "Key to sort by.";
     };
 
     tree_sort_direction = mkOption {
       type = types.enum [ (-1) 1 ];
       default = -1;
+      description = "Whether to sort the tree ascending or descending.";
     };
     tree_sort_key = mkOption {
       type = types.str;
       example = "PERCENT_MEM";
+      description = "Key to sort the three by.";
     };
 
     tree_view = mkOption {
       type = types.bool;
       default = false;
+      description = "Whether the use a tree view.";
     };
 
     tree_view_always_by_pid = mkOption {
       type = types.bool;
       default = false;
+      description = "Whther the tree view groups by pid.";
     };
   };
 
@@ -211,6 +222,9 @@ in {
             all_branches_collapsed = false;
           };
         };
+      '';
+      description = ''
+        List of screens.
       '';
     };
 
