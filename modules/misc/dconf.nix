@@ -85,36 +85,43 @@ in {
     '';
 
     home.activation.dconfSettings = hm.dag.entryAfter [ "installPackages" ] (let
-      iniFile = pkgs.writeText "hm-dconf.ini" (toDconfIni cfg.settings);
+      iniFile = config.home.activationPackageSet.writeText "hm-dconf.ini"
+        (toDconfIni cfg.settings);
 
       statePath = "state/${stateDconfKeys.name}";
 
-      cleanup = pkgs.writeShellScript "dconf-cleanup" ''
-        set -euo pipefail
+      cleanup =
+        config.home.activationPackageSet.writeShellScript "dconf-cleanup" ''
+          set -euo pipefail
 
-        ${config.lib.bash.initHomeManagerLib}
+          ${config.lib.bash.initHomeManagerLib}
 
-        PATH=${makeBinPath [ pkgs.dconf pkgs.jq ]}''${PATH:+:}$PATH
+          PATH=${
+            makeBinPath [
+              config.home.activationPackageSet.dconf
+              config.home.activationPackageSet.jq
+            ]
+          }''${PATH:+:}$PATH
 
-        oldState="$1"
-        newState="$2"
+          oldState="$1"
+          newState="$2"
 
-        # Can't do cleanup if we don't know the old state.
-        if [[ ! -f $oldState ]]; then
-          exit 0
-        fi
+          # Can't do cleanup if we don't know the old state.
+          if [[ ! -f $oldState ]]; then
+            exit 0
+          fi
 
-        # Reset all keys that are present in the old generation but not the new
-        # one.
-        jq -r -n \
-            --slurpfile old "$oldState" \
-            --slurpfile new "$newState" \
-            '($old[] - $new[])[]' \
-          | while read -r key; do
-              verboseEcho "Resetting dconf key \"$key\""
-              run $DCONF_DBUS_RUN_SESSION dconf reset "$key"
-            done
-      '';
+          # Reset all keys that are present in the old generation but not the new
+          # one.
+          jq -r -n \
+              --slurpfile old "$oldState" \
+              --slurpfile new "$newState" \
+              '($old[] - $new[])[]' \
+            | while read -r key; do
+                verboseEcho "Resetting dconf key \"$key\""
+                run $DCONF_DBUS_RUN_SESSION dconf reset "$key"
+              done
+        '';
     in ''
       if [[ -v DBUS_SESSION_BUS_ADDRESS ]]; then
         export DCONF_DBUS_RUN_SESSION=""

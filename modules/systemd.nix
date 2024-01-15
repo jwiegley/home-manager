@@ -314,7 +314,7 @@ in {
         '';
         legacy = ''
           PATH=${dirOf cfg.systemctlPath}:$PATH \
-          ${pkgs.ruby}/bin/ruby ${./systemd-activate.rb} \
+          ${cfg.activationPackageSet.ruby}/bin/ruby ${./systemd-activate.rb} \
             "''${oldGenPath=}" "$newGenPath" "${servicesStartTimeoutMs}"
         '';
         sd-switch = let
