@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, activationPkgs, ... }:
 
 with lib;
 
@@ -425,11 +425,6 @@ in
       description = "The package containing the complete activation script.";
     };
 
-    home.activationPackageSet = mkOption {
-      type = with types; lazyAttrsOf anything;
-      description = "The package set to be used to in the complete activation script.";
-    };
-
     home.extraActivationPath = mkOption {
       internal = true;
       type = types.listOf types.package;
@@ -654,7 +649,6 @@ in
           source ${../lib/bash/home-manager.sh}
         '';
 
-    home.activationPackageSet = lib.mkDefault pkgs;
     home.activationPackage =
       let
         mkCmd = res: ''
@@ -672,7 +666,7 @@ in
         # Programs that always should be available on the activation
         # script's PATH.
         activationBinPaths = lib.makeBinPath (
-          with cfg.activationPackageSet; [
+          with activationPkgs; [
             bash
             coreutils
             diffutils           # For `cmp` and `diff`.
@@ -691,11 +685,11 @@ in
           if config.nix.enable && config.nix.package != null then
             ":${config.nix.package}/bin"
           else
-            ":$(${cfg.activationPackageSet.coreutils}/bin/dirname $(${cfg.activationPackageSet.coreutils}/bin/readlink -m $(type -p nix-env)))"
+            ":$(${activationPkgs.coreutils}/bin/dirname $(${activationPkgs.coreutils}/bin/readlink -m $(type -p nix-env)))"
         )
         + optionalString (!cfg.emptyActivationPath) "\${PATH:+:}$PATH";
 
-        activationScript = cfg.activationPackageSet.writeShellScript "activation-script" ''
+        activationScript = activationPkgs.writeShellScript "activation-script" ''
           set -eu
           set -o pipefail
 
