@@ -29,18 +29,12 @@ let
   else
     unwrappedPackageName;
 
-  vendorPath = with platforms;
-    if isDarwin then darwin.vendorPath or null else linux.vendorPath or null;
-
-  configPath = with platforms;
-    if isDarwin then darwin.configPath else linux.configPath;
-
-  profilesPath = if isDarwin then "${configPath}/Profiles" else configPath;
+  profilesPath = if isDarwin then "${cfg.configPath}/Profiles" else cfg.configPath;
 
   nativeMessagingHostsPath = if isDarwin then
-    "${vendorPath}/NativeMessagingHosts"
+    "${cfg.vendorPath}/NativeMessagingHosts"
   else
-    "${vendorPath}/native-messaging-hosts";
+    "${cfg.vendorPath}/native-messaging-hosts";
 
   nativeMessagingHostsJoined = pkgs.symlinkJoin {
     name = "ff_native-messaging-hosts";
@@ -233,8 +227,11 @@ let
 in {
   options = setAttrByPath modulePath {
     enable = mkOption {
+      type = types.bool;
+      default = false;
+      example = true;
       description = ''
-        Whether to enable ${name}.${
+        Whether to enable ${cfg.name}.${
           optionalString (description != null) " ${description}"
         }
         ${optionalString (!visible)
@@ -259,20 +256,50 @@ in {
         }
       '';
       description = ''
-        The ${name} package to use. If state version ≥ 19.09 then
-        this should be a wrapped ${name} package. For earlier state
-        versions it should be an unwrapped ${name} package.
-        Set to `null` to disable installing ${name}.
+        The ${cfg.name} package to use. If state version ≥ 19.09 then
+        this should be a wrapped ${cfg.name} package. For earlier state
+        versions it should be an unwrapped ${cfg.name} package.
+        Set to `null` to disable installing ${cfg.name}.
       '';
     };
 
-    nativeMessagingHosts = optionalAttrs (vendorPath != null) (mkOption {
+    name = mkOption {
+      internal = true;
+      type = types.str;
+      default = name;
+      example = "Firefox";
+      description = "The name of the browser.";
+    };
+
+    vendorPath = mkOption {
+      internal = true;
+      type = with types; nullOr str;
+      default = with platforms;
+        if isDarwin then
+          darwin.vendorPath or null
+        else
+          linux.vendorPath or null;
+      example = ".mozilla";
+      description =
+        "Directory containing the native messaging hosts directory.";
+    };
+
+    configPath = mkOption {
+      internal = true;
+      type = types.str;
+      default = with platforms;
+        if isDarwin then darwin.configPath else linux.configPath;
+      example = ".mozilla/firefox";
+      description = "Directory containing the ${cfg.name} configuration files.";
+    };
+
+    nativeMessagingHosts = optionalAttrs (cfg.vendorPath != null) (mkOption {
       inherit visible;
       type = types.listOf types.package;
       default = [ ];
       description = ''
         Additional packages containing native messaging hosts that should be
-        made available to ${name} extensions.
+        made available to ${cfg.name} extensions.
       '';
     });
 
@@ -280,7 +307,7 @@ in {
       inherit visible;
       type = with types; nullOr package;
       readOnly = true;
-      description = "Resulting ${name} package.";
+      description = "Resulting ${cfg.name} package.";
     };
 
     policies = optionalAttrs (unwrappedPackageName != null) (mkOption {
@@ -316,7 +343,7 @@ in {
           settings = mkOption {
             type = types.attrsOf (jsonFormat.type // {
               description =
-                "${name} preference (int, bool, string, and also attrs, list, float as a JSON string)";
+                "${cfg.name} preference (int, bool, string, and also attrs, list, float as a JSON string)";
             });
             default = { };
             example = literalExpression ''
@@ -334,9 +361,9 @@ in {
               }
             '';
             description = ''
-              Attribute set of ${name} preferences.
+              Attribute set of ${cfg.name} preferences.
 
-              ${name} only supports int, bool, and string types for
+              ${cfg.name} only supports int, bool, and string types for
               preferences, but home-manager will automatically
               convert all other JSON-compatible values into strings.
             '';
@@ -353,7 +380,7 @@ in {
           userChrome = mkOption {
             type = types.lines;
             default = "";
-            description = "Custom ${name} user chrome CSS.";
+            description = "Custom ${cfg.name} user chrome CSS.";
             example = ''
               /* Hide tab bar in FF Quantum */
               @-moz-document url("chrome://browser/content/browser.xul") {
@@ -372,7 +399,7 @@ in {
           userContent = mkOption {
             type = types.lines;
             default = "";
-            description = "Custom ${name} user content CSS.";
+            description = "Custom ${cfg.name} user content CSS.";
             example = ''
               /* Hide scrollbar in FF Quantum */
               *{scrollbar-width:none !important}
@@ -498,7 +525,7 @@ in {
               default = false;
               description = ''
                 Whether to force replace the existing search
-                configuration. This is recommended since ${name} will
+                configuration. This is recommended since ${cfg.name} will
                 replace the symlink for the search configuration on every
                 launch, but note that you'll lose any existing
                 configuration by enabling this.
@@ -566,7 +593,7 @@ in {
               description = ''
                 Attribute set of search engine configurations. Engines
                 that only have {var}`metaData` specified will
-                be treated as builtin to ${name}.
+                be treated as builtin to ${cfg.name}.
 
                 See [SearchEngine.jsm](https://searchfox.org/mozilla-central/rev/669329e284f8e8e2bb28090617192ca9b4ef3380/toolkit/components/search/SearchEngine.jsm#1138-1177)
                 in Firefox's source for available options. We maintain a
@@ -678,7 +705,7 @@ in {
               ]
             '';
             description = ''
-              List of ${name} add-on packages to install for this profile.
+              List of ${cfg.name} add-on packages to install for this profile.
               Some pre-packaged add-ons are accessible from the
               [Nix User Repository](https://github.com/nix-community/NUR).
               Once you have NUR installed run
@@ -687,10 +714,10 @@ in {
               $ nix-env -f '<nixpkgs>' -qaP -A nur.repos.rycee.firefox-addons
               ```
 
-              to list the available ${name} add-ons.
+              to list the available ${cfg.name} add-ons.
 
               Note that it is necessary to manually enable these extensions
-              inside ${name} after the first installation.
+              inside ${cfg.name} after the first installation.
 
               To automatically enable extensions add
               `"extensions.autoDisableScopes" = 0;`
@@ -702,7 +729,7 @@ in {
         };
       }));
       default = { };
-      description = "Attribute set of ${name} profiles.";
+      description = "Attribute set of ${cfg.name} profiles.";
     };
 
     enableGnomeExtensions = mkOption {
@@ -727,7 +754,7 @@ in {
           catAttrs "name" (filter (a: a.isDefault) (attrValues cfg.profiles));
       in {
         assertion = cfg.profiles == { } || length defaults == 1;
-        message = "Must have exactly one default ${name} profile but found "
+        message = "Must have exactly one default ${cfg.name} profile but found "
           + toString (length defaults) + optionalString (length defaults > 1)
           (", namely " + concatStringsSep ", " defaults);
       })
@@ -761,9 +788,9 @@ in {
     home.packages = lib.optional (cfg.finalPackage != null) cfg.finalPackage;
 
     home.file = mkMerge ([{
-      "${configPath}/profiles.ini" =
+      "${cfg.configPath}/profiles.ini" =
         mkIf (cfg.profiles != { }) { text = profilesIni; };
-    }] ++ optional (vendorPath != null) {
+    }] ++ optional (cfg.vendorPath != null) {
       "${nativeMessagingHostsPath}" = {
         source =
           "${nativeMessagingHostsJoined}/lib/mozilla/native-messaging-hosts";
@@ -913,12 +940,12 @@ in {
                 + "to accordingly.";
 
               salt = if profile.search.default != null then
-                profile.path + profile.search.default + disclaimer name
+                profile.path + profile.search.default + disclaimer cfg.name
               else
                 null;
 
               privateSalt = if profile.search.privateDefault != null then
-                profile.path + profile.search.privateDefault + disclaimer name
+                profile.path + profile.search.privateDefault + disclaimer cfg.name
               else
                 null;
             in pkgs.runCommand "search.json.mozlz4" {

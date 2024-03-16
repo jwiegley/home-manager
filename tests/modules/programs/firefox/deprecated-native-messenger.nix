@@ -1,6 +1,6 @@
-{ config, lib, pkgs, ... }:
 
-with lib;
+
+{ config, lib, ... }:
 
 {
   imports = [ ./setup-firefox-mock-overlay.nix ];
