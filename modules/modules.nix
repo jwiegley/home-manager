@@ -227,6 +227,7 @@ let
     ./programs/tiny.nix
     ./programs/tmate.nix
     ./programs/tmux.nix
+    ./programs/todoman.nix
     ./programs/topgrade.nix
     ./programs/translate-shell.nix
     ./programs/urxvt.nix
