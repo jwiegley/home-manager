@@ -19,11 +19,40 @@
         khal = {
           enable = true;
           readOnly = true;
+          color = "#ff0000";
           type = "calendar";
         };
         local.type = "filesystem";
         local.fileExt = ".ics";
         name = "test";
+        remote = {
+          type = "http";
+          url = "https://example.com/events.ical";
+        };
+      };
+      testWithAddresss = {
+        khal = {
+          enable = true;
+          addresses = [ "john.doe@email.com" ];
+        };
+        local = {
+          type = "filesystem";
+          fileExt = ".ics";
+        };
+        remote = {
+          type = "http";
+          url = "https://example.com/events.ical";
+        };
+      };
+      testWithMultipleAddresss = {
+        khal = {
+          enable = true;
+          addresses = [ "john.doe@email.com" "another.brick@on.the.wall" ];
+        };
+        local = {
+          type = "filesystem";
+          fileExt = ".ics";
+        };
         remote = {
           type = "http";
           url = "https://example.com/events.ical";

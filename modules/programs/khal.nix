@@ -46,9 +46,12 @@ let
           (value.khal.type == "birthdays" && value.khal ? thisCollection)
           value.khal.thisCollection)
       }"
-    ] ++ optional (value.khal.readOnly) "readonly = True" ++ [
-      (toKeyValueIfDefined (getAttrs [ "type" "color" "priority" ] value.khal))
-    ] ++ [ "\n" ]);
+    ] ++ optional (value.khal.readOnly) "readonly = True"
+      ++ optional (value.khal.addresses != [ ])
+      "addresses= ${lib.concatStringsSep ", " value.khal.addresses}"
+      ++ optional (value.khal.color != null) "color = '${value.khal.color}'"
+      ++ [ (toKeyValueIfDefined (getAttrs [ "type" "priority" ] value.khal)) ]
+      ++ [ "\n" ]);
 
   localeFormatOptions = let
     T = lib.types;

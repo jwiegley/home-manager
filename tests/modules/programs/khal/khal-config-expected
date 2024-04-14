@@ -2,6 +2,23 @@
 [[test]]
 path = /home/hm-user/$XDG_CONFIG_HOME/cal/test/
 readonly = True
+color = '#ff0000'
+priority=10
+type=calendar
+
+
+
+[[testWithAddresss]]
+path = /home/hm-user/$XDG_CONFIG_HOME/cal/testWithAddresss/
+addresses= john.doe@email.com
+priority=10
+type=calendar
+
+
+
+[[testWithMultipleAddresss]]
+path = /home/hm-user/$XDG_CONFIG_HOME/cal/testWithMultipleAddresss/
+addresses= john.doe@email.com, another.brick@on.the.wall
 priority=10
 type=calendar
 
