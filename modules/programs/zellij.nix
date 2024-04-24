@@ -9,7 +9,7 @@ let
   zellijCmd = getExe cfg.package;
 
 in {
-  meta.maintainers = [ hm.maintainers.mainrs ];
+  meta.maintainers = with hm.maintainers; [ mainrs tennox ];
 
   options.programs.zellij = {
     enable = mkEnableOption "zellij";
