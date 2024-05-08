@@ -270,6 +270,7 @@ let
     ./services/barrier.nix
     ./services/batsignal.nix
     ./services/betterlockscreen.nix
+    ./services/blanket.nix
     ./services/blueman-applet.nix
     ./services/borgmatic.nix
     ./services/cachix-agent.nix

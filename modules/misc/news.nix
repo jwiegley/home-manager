@@ -1595,6 +1595,17 @@ in {
           when idle or active. See https://github.com/hyprwm/hypridle for more.
         '';
       }
+      {
+        time = "2024-05-05T16:07:00+00:00";
+        condition = hostPlatform.isLinux;
+        message = ''
+          A new module is available: 'services.blanket'.
+
+          Blanket is a program you can use to improve your focus and increase
+          your productivity by listening to different sounds. See 
+          https://github.com/rafaelmardojai/blanket for more.
+        '';
+      }
     ];
   };
 }

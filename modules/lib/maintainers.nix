@@ -67,6 +67,12 @@
     github = "danjujan";
     githubId = 44864658;
   };
+  daru-san = {
+    name = "Daru";
+    email = "zadarumaka@proton.me";
+    github = "Daru-san";
+    githubId = 135046711;
+  };
   d-dervishi = {
     email = "david.dervishi@epfl.ch";
     github = "d-dervishi";
