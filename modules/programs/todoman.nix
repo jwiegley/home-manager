@@ -24,7 +24,7 @@ in {
       example = "*/*";
     };
 
-    config = mkOption {
+    extraConfig = mkOption {
       type = types.lines;
       default = "";
       description = ''
