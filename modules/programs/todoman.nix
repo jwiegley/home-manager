@@ -29,7 +29,7 @@ in {
       default = "";
       description = ''
         Text for configuration of todoman.
-        The syntaxt is python.
+        The syntax is Python.
 
         See [docs](`https://todoman.readthedocs.io/en/stable/man.html#id5`).
         for the full list of options.
